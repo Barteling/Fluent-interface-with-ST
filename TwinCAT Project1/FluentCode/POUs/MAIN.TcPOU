@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="MAIN" Id="{9eec8c03-abcb-4771-a1da-c6b5667fb74a}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	ErrorString_WithConcat:STRING;
+	ErrorString_WithFluentCode:STRING;
+	ErrorMessage:STRING := 'Important message';
+	ErrorNumber:int := 1;
+	_StringBuilder:StringBuilder;
+	StringAreEqual:BOOL;
+	StringAreStillEqual:BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ErrorString_WithConcat := CONCAT(CONCAT(CONCAT(CONCAT('Error number: ' , INT_TO_STRING(ErrorNumber)),'. Message: '),ErrorMessage),'.');
+ErrorString_WithConcat := Concat('Error number: ' , INT_TO_STRING(ErrorNumber));
+ErrorString_WithConcat := Concat(ErrorString_WithConcat , '. Message: ');
+ErrorString_WithConcat := Concat(ErrorString_WithConcat , ErrorMessage);
+ErrorString_WithConcat := Concat(ErrorString_WithConcat , '.');
+							
+ErrorString_WithFluentCode := _StringBuilder.Reset()
+							.Append('Error number: ')
+							.Append(INT_TO_STRING(ErrorNumber))
+							.Append('. Message: ')
+							.Append(ErrorMessage)
+							.Append('.')
+							.ToString();
+							
+StringAreEqual := ErrorString_WithConcat = ErrorString_WithFluentCode;
+
+ErrorString_WithConcat := INSERT( ErrorString_WithConcat, ' extended',43);
+ErrorString_WithFluentCode := _StringBuilder.InsertAtLocation(' extended',43).ToString();
+
+StringAreStillEqual :=  ErrorString_WithConcat = ErrorString_WithFluentCode;]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="154" Count="0" />
+      <LineId Id="156" Count="3" />
+      <LineId Id="230" Count="0" />
+      <LineId Id="250" Count="4" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="255" Count="1" />
+      <LineId Id="241" Count="0" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="259" Count="0" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="271" Count="0" />
+      <LineId Id="270" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
